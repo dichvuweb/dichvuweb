@@ -567,7 +567,7 @@
     <!--==========================
       Gallery Section
     ============================-->
-    <section id="gallery">
+    <!-- <section id="gallery">
       <div class="container-fluid">
         <div class="section-header">
           <h3 class="section-title">Ảnh</h3>
@@ -627,8 +627,9 @@
 
         </div>
 
-      </div>
-    </section><!-- #gallery -->
+      </div> -->
+    <!-- </section> -->
+    <!-- #gallery -->
 
     <!--==========================
       Contact Section
@@ -678,7 +679,7 @@
             <div class="form">
               <div id="sendmessage">Your message has been sent. Thank you!</div>
               <div id="errormessage"></div>
-              <form action="" method="post" role="form" class="contactForm">
+              <form action="" method="post" id="form" role="form" class="contactForm">
                 <div class="form-row">
                   <div class="form-group col-lg-6">
                     <input type="text" name="name" class="form-control" id="name" placeholder="Tên của bạn" data-rule="minlen:4" data-msg="Nhập tên của bạn" />
@@ -690,11 +691,11 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="text" class="form-control" name="subject" id="subject" placeholder="Số điện thoại" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+                  <input type="text" class="form-control" name="subject" id="subject" placeholder="Số điện thoại" data-rule="minlen:9" data-msg="Bạn phải nhập đúng số điện thoại" />
                   <div class="validation"></div>
                 </div>
                 <div class="form-group">
-                  <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Nội dung" placeholder="Message"></textarea>
+                  <textarea class="form-control" id="message" name="message" rows="5" data-rule="required" data-msg="Hãy nhập nội dung bạn muốn tư vấn, liên hệ" placeholder="Message"></textarea>
                   <div class="validation"></div>
                 </div>
                 <div class="text-center"><button type="submit" title="Send Message">Gửi</button></div>
@@ -706,6 +707,26 @@
 
       </div>
     </section><!-- #contact -->
+
+    <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Thông báo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Bạn đã gửi thông tin thành công! Chúng tôi sẽ liên hệ cho bạn ngay!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   </main>
 
@@ -756,6 +777,36 @@
 
   <!-- Template Main Javascript File -->
   <script src="js/main.js"></script>
+  <script type="text/javascript">
+    function postToGoogle() {
+        var field1 = $('#name').val();
+        var field2 = $('#email').val();
+        var field3 = $('#subject').val();
+        var field4 = $('#message').val();
+
+        $.ajax({
+            url: "https://docs.google.com/forms/d/1XQbu6LRRpgKn7E-zcIpJkwKfg9d06DAo5Cd63n8ieNQ/formResponse",
+            data: {"entry.275432823":field1 , "entry.1712825234": field2, "entry.2063153591": field3, "entry.1119434814": field4},
+            type: "POST",
+            dataType: "xml",
+            statusCode: {
+                0: function() {
+                  $('#exampleModalCenter').modal('show'); 
+                },
+                200: function() {
+                  $('#exampleModalCenter').modal('show'); 
+                }
+            }
+        });
+    }
+     
+    $(document).ready(function(){
+        $('#form').submit(function() {
+            postToGoogle();
+            return false;
+        });
+    });
+</script>
 
 </body>
 </html>
